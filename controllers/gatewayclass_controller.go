@@ -17,6 +17,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-logr/logr"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -35,10 +36,23 @@ type GatewayClassReconciler struct {
 
 // Reconcile the changes.
 func (r *GatewayClassReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	_ = context.Background()
-	_ = r.Log.WithValues("gatewayclass", req.NamespacedName)
+	ctx := context.Background()
+	log := r.Log.WithValues("gatewayclass", req.NamespacedName)
 
 	// your logic here
+
+	var gClass v1alpha1.GatewayClass
+	if err := r.Get(ctx, req.NamespacedName, &gClass); err != nil {
+		notfound := client.IgnoreNotFound(err)
+		if notfound != nil {
+			log.Info(fmt.Sprintf("Unable to fetch GatewayClass, %s", err))
+			return ctrl.Result{}, notfound
+		}
+		log.Info("Would do a delete operation")
+		return ctrl.Result{}, nil
+	}
+
+	log.Info("Resource exists, was either created or updated")
 
 	return ctrl.Result{}, nil
 }
