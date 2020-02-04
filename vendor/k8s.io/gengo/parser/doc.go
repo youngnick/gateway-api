@@ -1,6 +1,5 @@
-// +build tools
-
 /*
+Copyright 2015 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,18 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// This package contains import references to packages required only for the
-// build process.
-// https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
-package tools
-
-import (
-
-	_ "k8s.io/code-generator/cmd/client-gen"
-	_ "k8s.io/code-generator/cmd/deepcopy-gen"
-	_ "k8s.io/code-generator/cmd/defaulter-gen"
-	_ "k8s.io/code-generator/cmd/informer-gen"
-	_ "k8s.io/code-generator/cmd/lister-gen"
-		
-	_ "sigs.k8s.io/controller-tools/cmd/controller-gen"
-)
+// Package parser provides code to parse go files, type-check them, extract the
+// types.
+package parser // import "k8s.io/gengo/parser"

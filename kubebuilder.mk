@@ -36,7 +36,7 @@ test: generate fmt vet manifests
 	go test ./... -coverprofile cover.out
 
 # Build manager binary
-manager: generate fmt vet
+manager: generate informers fmt vet
 	go build -o bin/manager main.go
 
 # Run against the configured Kubernetes cluster in ~/.kube/config
@@ -67,6 +67,11 @@ vet:
 # Generate code
 generate:
 	$(CONTROLLER_GEN) object:headerFile=./hack/boilerplate.go.txt paths="./..."
+
+.PHONY: informers
+# Generate informers
+informers:
+	hack/generate-informers.sh
 
 # Build the docker image
 docker-build: test

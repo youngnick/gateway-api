@@ -1,6 +1,5 @@
-// +build tools
-
 /*
+Copyright 2017 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,18 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// This package contains import references to packages required only for the
-// build process.
-// https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
-package tools
+package path
 
-import (
+import "strings"
 
-	_ "k8s.io/code-generator/cmd/client-gen"
-	_ "k8s.io/code-generator/cmd/deepcopy-gen"
-	_ "k8s.io/code-generator/cmd/defaulter-gen"
-	_ "k8s.io/code-generator/cmd/informer-gen"
-	_ "k8s.io/code-generator/cmd/lister-gen"
-		
-	_ "sigs.k8s.io/controller-tools/cmd/controller-gen"
-)
+// Vendorless removes the longest match of "*/vendor/" from the front of p.
+// It is useful if a package locates in vendor/, e.g.,
+// k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/apis/meta/v1, because gengo
+// indexes the package with its import path, e.g.,
+// k8s.io/apimachinery/pkg/apis/meta/v1,
+func Vendorless(p string) string {
+	if pos := strings.LastIndex(p, "/vendor/"); pos != -1 {
+		return p[pos+len("/vendor/"):]
+	}
+	return p
+}
