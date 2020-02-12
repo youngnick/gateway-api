@@ -196,6 +196,7 @@ type HTTPRouteStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +genclient
 
 // HTTPRoute is the Schema for the httproutes API
 type HTTPRoute struct {

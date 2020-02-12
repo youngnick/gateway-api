@@ -35,7 +35,7 @@ type TcpRouteStatus struct {
 }
 
 // +kubebuilder:object:root=true
-
+// +genclient
 // TcpRoute is the Schema for the tcproutes API
 type TcpRoute struct {
 	metav1.TypeMeta   `json:",inline"`

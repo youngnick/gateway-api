@@ -21,6 +21,7 @@ import (
 )
 
 // +kubebuilder:object:root=true
+// +genclient
 
 // Gateway represents an instantiation of a service-traffic handling infrastructure.
 type Gateway struct {
