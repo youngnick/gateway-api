@@ -210,6 +210,35 @@ func WaitForGatewayAddress(t *testing.T, client client.Client, timeoutConfig con
 	return net.JoinHostPort(ipAddr, port), waitErr
 }
 
+// GatewayMustHaveNRoutes validates that the gateway has at least one listener
+// with numRoutes attached Routes.
+func GatewayMustHaveAttachedRoutes(t *testing.T, client client.Client, timeoutConfig config.TimeoutConfig, gwName types.NamespacedName, numRoutes int32) {
+	var gotStatus *v1beta1.GatewayStatus
+	waitErr := wait.PollImmediate(1*time.Second, timeoutConfig.GatewayStatusMustHaveListeners, func() (bool, error) {
+		gw := &v1beta1.Gateway{}
+		ctx, cancel := context.WithTimeout(context.Background(), timeoutConfig.GetTimeout)
+		defer cancel()
+		err := client.Get(ctx, gwName, gw)
+		require.NoError(t, err, "error fetching Gateway")
+
+		if len(gw.Status.Listeners) == 0 {
+			// No listeners in status.
+			return false, nil
+		}
+		
+		for _, listenerStatus := range gw.Status.Listeners {
+			if listenerStatus.AttachedRoutes == numRoutes {
+				return true, nil
+			}
+		}
+		gotStatus = &gw.Status
+		return false, nil
+	})
+	if waitErr != nil {
+		t.Errorf("Error waiting for gateway, got Gateway Status %v, want zero listeners or exactly 1 listener with zero routes", gotStatus)
+	}
+}
+
 // GatewayMustHaveZeroRoutes validates that the gateway has zero routes attached.  The status
 // may indicate a single listener with zero attached routes or no listeners.
 func GatewayMustHaveZeroRoutes(t *testing.T, client client.Client, timeoutConfig config.TimeoutConfig, gwName types.NamespacedName) {
