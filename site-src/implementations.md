@@ -10,7 +10,7 @@ Implementors and integrators of Gateway API are encouraged to update this docume
 - [Acnodal EPIC][1] (public preview)
 - [Apache APISIX][2] (alpha)
 - [BIG-IP Kubernetes Gateway][20]
-- [Cilium][16] (work in progress)
+- [Cilium][16] (beta)
 - [Contour][3] (beta)
 - [Emissary-Ingress (Ambassador API Gateway)][4] (alpha)
 - [Envoy Gateway][18] (alpha)
@@ -93,6 +93,13 @@ performance, and avoid the operational complexity of sidecars. Cilium also
 supports the sidecar proxy model, offering choice to users. Cilium is [working on
 a Gateway API implementation][cilium-issue].
 
+Cilium v1.13 implements Gateway API v0.5.1, supporting the Standard channel resources
+(GatewayClass, Gateway, and HTTPRoute), plus ReferenceGrant and TLSRoute, and
+passes all the core conformance tests, plus the ReferenceGrant extended conformance tests.
+
+Please see the [Gateway API tutorial](#cilium-gateway-api) for some documentation
+to get you started.
+
 Cilium is open source and is a CNCF incubation project. 
 
 If you have questions about Cilium Service Mesh the #service-mesh channel on
@@ -105,6 +112,7 @@ effort, check out the #development channel or join our [weekly developer meeting
 [cilium-issue]:https://github.com/cilium/cilium/issues/20655
 [cilium-slack]:https://cilium.io/slack
 [cilium-meeting]:https://github.com/cilium/cilium#weekly-developer-meeting
+[cilium-gateway-api]:https://docs.cilium.io/en/v1.13.0-rc4/network/servicemesh/gateway-api/gateway-api/
 
 ### Contour
 
